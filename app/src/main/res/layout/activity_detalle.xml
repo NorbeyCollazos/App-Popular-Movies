@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".DetalleActivity">
+    tools:context=".DetalleActivity"
+    android:background="@color/colorPrimary">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -27,7 +28,7 @@
             <ImageView
                 android:id="@+id/img_portada"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="280dp"
                 android:src="@mipmap/ic_launcher"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"

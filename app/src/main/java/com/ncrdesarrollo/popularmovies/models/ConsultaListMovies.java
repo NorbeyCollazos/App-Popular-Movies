@@ -1,13 +1,7 @@
-package com.ncrdesarrollo.popularmovies;
+package com.ncrdesarrollo.popularmovies.models;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.content.Context;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -17,11 +11,8 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.ncrdesarrollo.popularmovies.MainActivity;
 import com.ncrdesarrollo.popularmovies.adapters.MovieAdapter;
-import com.ncrdesarrollo.popularmovies.interfaces.MovieListInterface;
-import com.ncrdesarrollo.popularmovies.models.ConsultaListMovies;
-import com.ncrdesarrollo.popularmovies.models.MovieModel;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,35 +21,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MovieListInterface {
-
+public class ConsultaListMovies {
+    Context context;
     private static String JSON_URL = "https://api.themoviedb.org/3/movie/popular?api_key=ea0b061bc609cf004a8c467e95c24ce1";
     List<MovieModel> movieModelList;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
     RequestQueue requestQueue;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    public ConsultaListMovies(Context context) {
+        this.context = context;
+        requestQueue = Volley.newRequestQueue(context);
         movieModelList = new ArrayList<>();
-        recyclerView = findViewById(R.id.myRecicler);
-        progressBar = findViewById(R.id.progress_circular);
-        requestQueue = Volley.newRequestQueue(this);
-        jsonObjectRequest();
-/*        ConsultaListMovies consultaListMovies = new ConsultaListMovies(this);
-        consultaListMovies.jsonObjectRequest();
-        //PutDataIntoRecycler(movieModelList);
-        MovieAdapter movieAdapter = new MovieAdapter(this, movieModelList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
-        recyclerView.setAdapter(movieAdapter);*/
 
     }
 
-
-    private void jsonObjectRequest(){
+    public void jsonObjectRequest(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 JSON_URL,
@@ -66,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieListInterfac
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        hideProgressBar();
+                        //hideProgressBar();
                         try {
                             JSONArray jsonArray = response.getJSONArray("results");
                             int size = jsonArray.length();
@@ -80,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieListInterfac
                                 movieModelList.add(model);
 
 
+
                             }
 
                         } catch (JSONException e) {
@@ -91,39 +68,18 @@ public class MainActivity extends AppCompatActivity implements MovieListInterfac
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof ServerError){
-                            Toast.makeText(MainActivity.this, "Error en el servidor", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Error en el servidor", Toast.LENGTH_SHORT).show();
                         }
                         if (error instanceof NoConnectionError){
-                            Toast.makeText(MainActivity.this, "No hay conexión a internet", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No hay conexión a internet", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
         );
 
         requestQueue.add(jsonObjectRequest);
-        PutDataIntoRecycler(movieModelList);
-    }
+        MovieAdapter movieAdapter = new MovieAdapter(context, movieModelList);
 
-    private void PutDataIntoRecycler(List<MovieModel> movieModelList) {
-
-        MovieAdapter movieAdapter = new MovieAdapter(this, movieModelList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
-        recyclerView.setAdapter(movieAdapter);
-    }
-
-
-    @Override
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void cargarRecycler() {
 
     }
 }

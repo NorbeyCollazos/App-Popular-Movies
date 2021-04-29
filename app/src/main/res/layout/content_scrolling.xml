@@ -19,15 +19,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textStyle="bold"
-            android:textSize="18dp"
-            android:text="@string/cargando" />
+            android:textSize="22dp"
+            android:text="@string/cargando"
+            android:textColor="@color/colorAccent"/>
 
         <TextView
             android:id="@+id/tv_overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/cargando" />
+            android:text="@string/cargando"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"/>
 
     </LinearLayout>
 
