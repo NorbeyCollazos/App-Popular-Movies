@@ -4,5 +4,5 @@ public interface MovieListInterface {
 
     void showProgressBar();
     void hideProgressBar();
-    void cargarRecycler();
+
 }

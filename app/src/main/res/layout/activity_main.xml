@@ -9,21 +9,10 @@
     android:orientation="vertical"
     android:background="@android:color/black">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="22dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorAccent"
-        android:layout_margin="10dp"
-        android:id="@+id/tv_titutlo"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myRecicler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_titutlo"/>
+        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/progress_circular"
