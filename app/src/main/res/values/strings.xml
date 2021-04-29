@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">popularmovies</string>
+    <string name="cargando">Cargando...</string>
+</resources>
