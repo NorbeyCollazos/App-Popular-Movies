@@ -1,7 +1,6 @@
 package com.ncrdesarrollo.popularmovies.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.ncrdesarrollo.popularmovies.DetalleActivity;
 import com.ncrdesarrollo.popularmovies.R;
 import com.ncrdesarrollo.popularmovies.models.MovieModel;
 
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.myViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.myViewHolder> implements View.OnClickListener{
 
     private Context context;
     private List<MovieModel> data;
+    private View.OnClickListener listener;
 
     public MovieAdapter(Context context, List<MovieModel> data) {
         this.context = context;
@@ -35,6 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.myViewHolder
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
         view = inflater.inflate(R.layout.item_movie, parent, false);
+        view.setOnClickListener(this);
         return new myViewHolder(view);
     }
 
@@ -46,7 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.myViewHolder
                 .load("https://image.tmdb.org/t/p/w500"+data.get(position).getPoster_path())
                 .into(holder.img);
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        /*holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetalleActivity.class);
@@ -55,12 +55,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.myViewHolder
                 intent.putExtra("overview",data.get(position).getOverview() );
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (listener != null){
+            listener.onClick(view);
+        }
     }
 
 

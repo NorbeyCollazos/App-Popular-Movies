@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listaPeliculaFragment">
+
+    <fragment
+        android:id="@+id/listaPeliculaFragment"
+        android:name="com.ncrdesarrollo.popularmovies.fragments.ListaPeliculaFragment"
+        android:label="fragment_lista_pelicula"
+        tools:layout="@layout/fragment_lista_pelicula" >
+        <action
+            android:id="@+id/action_listaPeliculaFragment_to_detallePeliculaFragment"
+            app:destination="@id/detallePeliculaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detallePeliculaFragment"
+        android:name="com.ncrdesarrollo.popularmovies.fragments.DetallePeliculaFragment"
+        android:label="fragment_detalle_pelicula"
+        tools:layout="@layout/fragment_detalle_pelicula" >
+        <action
+            android:id="@+id/action_detallePeliculaFragment_to_listaPeliculaFragment"
+            app:destination="@id/listaPeliculaFragment" />
+    </fragment>
+</navigation>
