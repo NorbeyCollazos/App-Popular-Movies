@@ -10,6 +10,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        buildConfigField("String", "CLAVE_API_TMDT", CLAVE_API_TMDT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
