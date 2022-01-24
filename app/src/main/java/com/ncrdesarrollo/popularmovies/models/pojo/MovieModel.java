@@ -1,4 +1,4 @@
-package com.ncrdesarrollo.popularmovies.models;
+package com.ncrdesarrollo.popularmovies.models.pojo;
 
 public class MovieModel {
 

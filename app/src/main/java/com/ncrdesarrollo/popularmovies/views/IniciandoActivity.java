@@ -1,8 +1,10 @@
-package com.ncrdesarrollo.popularmovies;
+package com.ncrdesarrollo.popularmovies.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.ncrdesarrollo.popularmovies.R;
 
 public class IniciandoActivity extends AppCompatActivity {
 

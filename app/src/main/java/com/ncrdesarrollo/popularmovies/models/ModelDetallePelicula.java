@@ -1,12 +1,7 @@
 package com.ncrdesarrollo.popularmovies.models;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -17,8 +12,9 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.ncrdesarrollo.popularmovies.BuildConfig;
+import com.ncrdesarrollo.popularmovies.interfaces.InterfacesDetallePelicula;
+import com.ncrdesarrollo.popularmovies.models.pojo.MovieModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,75 +23,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsultasApiRest {
+public class ModelDetallePelicula implements InterfacesDetallePelicula.Model {
 
     Context context;
+    InterfacesDetallePelicula.Presenter presenter;
+
     List<MovieModel> list;
     private static final String API_TMDT = BuildConfig.CLAVE_API_TMDT;
-    private static String JSON_URL = "https://api.themoviedb.org/3/movie/popular?api_key="+API_TMDT;
     RequestQueue requestQueue;
 
-    public ConsultasApiRest(Context context) {
+    public ModelDetallePelicula(Context context, InterfacesDetallePelicula.Presenter presenter) {
         this.context = context;
+        this.presenter = presenter;
         requestQueue = Volley.newRequestQueue(context);
         list = new ArrayList<>();
     }
 
-    public List<MovieModel> consultarListaPeliculas(){
+    @Override
+    public MovieModel datosPelicula(String id) {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                JSON_URL,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //progressBar.setVisibility(View.GONE);
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("results");
-                            int size = jsonArray.length();
-                            for (int i = 0; i < size; i++){
-                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-                                MovieModel model = new MovieModel();
-                                model.setId(jsonObject.getString("id"));
-                                model.setTitle(jsonObject.getString("title"));
-                                model.setPoster_path(jsonObject.getString("poster_path"));
-                                model.setOverview(jsonObject.getString("overview"));
-                                list.add(model);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //progressBar.setVisibility(View.GONE);
-                        if (error instanceof ServerError){
-                            mensajeError("Error en el servidor");
-                        }
-                        if (error instanceof NoConnectionError){
-                            mensajeError("No hay conexión a internet");
-                        }
-
-                        if (error instanceof TimeoutError) {
-                            mensajeError("Se tardó la respuesta");
-                        }
-                    }
-                }
-        );
-
-        requestQueue.add(jsonObjectRequest);
-
-        return list;
-    }
-
-
-    public MovieModel consultarPelicula(String idPelicula) {
-
-        String URL_DESCRIPTION = "https://api.themoviedb.org/3/movie/" + idPelicula + "?api_key="+API_TMDT+"&language=es-ES";
+        String URL_DESCRIPTION = "https://api.themoviedb.org/3/movie/" + id + "?api_key="+API_TMDT+"&language=es-ES";
 
         final MovieModel movie = new MovieModel();
 
@@ -122,14 +69,14 @@ public class ConsultasApiRest {
                     public void onErrorResponse(VolleyError error) {
 
                         if (error instanceof ServerError){
-                            mensajeError("Error en el servidor");
+                            presenter.mensajeError("Error en el servidor");
                         }
                         if (error instanceof NoConnectionError){
-                            mensajeError("No hay conexión a internet");
+                            presenter.mensajeError("No hay conexión a internet");
                         }
 
                         if (error instanceof TimeoutError) {
-                            mensajeError("Se tardó la respuesta");
+                            presenter.mensajeError("Se tardó la respuesta");
                         }
                     }
                 }
@@ -138,13 +85,11 @@ public class ConsultasApiRest {
         requestQueue.add(jsonObjectRequest);
 
         return movie;
-
     }
 
-
-    public List<MovieModel> consultarPeliculasSimilares(String idPelicula){
-
-        String URL_SIMILARES = "https://api.themoviedb.org/3/movie/" + idPelicula + "/similar?api_key="+API_TMDT+"&language=es-ES";
+    @Override
+    public List<MovieModel> peliculasSimilares(String id) {
+        String URL_SIMILARES = "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key="+API_TMDT+"&language=es-ES";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -176,14 +121,14 @@ public class ConsultasApiRest {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof ServerError){
-                            mensajeError("Error en el servidor");
+                            presenter.mensajeError("Error en el servidor");
                         }
                         if (error instanceof NoConnectionError){
-                            mensajeError("No hay conexión a internet");
+                            presenter.mensajeError("No hay conexión a internet");
                         }
 
                         if (error instanceof TimeoutError) {
-                            mensajeError("Se tardó la respuesta");
+                            presenter.mensajeError("Se tardó la respuesta");
                         }
                     }
                 }
@@ -192,30 +137,5 @@ public class ConsultasApiRest {
         requestQueue.add(jsonObjectRequest);
 
         return list;
-
-    }
-
-
-
-
-
-    private void mensajeError(String mensaje){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(mensaje)
-                .setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
-
-
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        dialog.dismiss();
-                    }
-                });
-
-        builder.show();
     }
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listaPeliculaFragment"
-        android:name="com.ncrdesarrollo.popularmovies.fragments.ListaPeliculaFragment"
+        android:name="com.ncrdesarrollo.popularmovies.views.fragments.ListaPeliculaFragment"
         android:label="fragment_lista_pelicula"
         tools:layout="@layout/fragment_lista_pelicula" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detallePeliculaFragment"
-        android:name="com.ncrdesarrollo.popularmovies.fragments.DetallePeliculaFragment"
+        android:name="com.ncrdesarrollo.popularmovies.views.fragments.DetallePeliculaFragment"
         android:label="fragment_detalle_pelicula"
         tools:layout="@layout/fragment_detalle_pelicula" >
         <action
